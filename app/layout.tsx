@@ -5,19 +5,13 @@ const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://indexly-snowy.vercel
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
-  title: {
-    default: 'Indexly — Index Everywhere. Instantly.',
-    template: '%s — Indexly',
-  },
+  title: { default: 'Indexly — Index Everywhere. Instantly.', template: '%s — Indexly' },
   description: 'Index your website on 200+ search engines with just 2 simple steps. Google, Bing, Yandex, Naver and more. Free & Open Source.',
-  keywords: ['website indexing', 'search engine submission', 'SEO', 'Google index', 'Bing index', 'IndexNow', 'free SEO tool'],
-  authors: [{ name: 'Indexly' }],
+  keywords: ['website indexing', 'search engine submission', 'SEO tool', 'Google index', 'Bing index', 'IndexNow', 'free SEO', 'search console'],
+  authors: [{ name: 'Indexly', url: baseUrl }],
   creator: 'Indexly',
   openGraph: {
-    type: 'website',
-    locale: 'en_US',
-    url: baseUrl,
-    siteName: 'Indexly',
+    type: 'website', locale: 'en_US', url: baseUrl, siteName: 'Indexly',
     title: 'Indexly — Index Everywhere. Instantly.',
     description: 'Index your website on 200+ search engines with just 2 simple steps. Free & Open Source.',
   },
@@ -26,10 +20,7 @@ export const metadata: Metadata = {
     title: 'Indexly — Index Everywhere. Instantly.',
     description: 'Index your website on 200+ search engines with just 2 simple steps.',
   },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  robots: { index: true, follow: true },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -37,7 +28,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
-        <meta name="indexed-by" content="Indexly — indexly-snowy.vercel.app" />
+        <link rel="apple-touch-icon" href="/logo.png" />
+        {/* Indexly self-verification tag */}
+        <meta name="indexed-by" content="Indexly" data-indexly-id="SELF" />
       </head>
       <body>{children}</body>
     </html>
