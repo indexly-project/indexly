@@ -15,12 +15,17 @@ export default function LoginPage() {
   const handleSubmit = async () => {
     setError('')
     setSuccess('')
-    if (!email || !password) {
-      setError('Email और password दोनों डालो।')
+
+    if (!email.trim() || !password.trim()) {
+      setError('Please enter your email and password.')
+      return
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      setError('Please enter a valid email address.')
       return
     }
     if (password.length < 6) {
-      setError('Password कम से कम 6 characters का होना चाहिए।')
+      setError('Password must be at least 6 characters.')
       return
     }
 
@@ -28,17 +33,29 @@ export default function LoginPage() {
     const supabase = createClient()
 
     if (mode === 'signup') {
-      const { error: err } = await supabase.auth.signUp({ email, password })
+      const { error: err } = await supabase.auth.signUp({
+        email: email.trim(),
+        password,
+      })
       if (err) {
         setError(err.message)
       } else {
-        setSuccess('Account बन गया! अब login करो।')
+        setSuccess('Account created! You can now log in.')
         setMode('login')
+        setPassword('')
       }
     } else {
-      const { error: err } = await supabase.auth.signInWithPassword({ email, password })
+      const { error: err } = await supabase.auth.signInWithPassword({
+        email: email.trim(),
+        password,
+      })
       if (err) {
-        setError('Email या password गलत है।')
+        // Show exact Supabase error in English
+        if (err.message.toLowerCase().includes('invalid')) {
+          setError('Invalid email or password. Please try again.')
+        } else {
+          setError(err.message)
+        }
       } else {
         router.replace('/dashboard')
       }
@@ -56,7 +73,7 @@ export default function LoginPage() {
             (e.target as HTMLImageElement).style.display = 'none'
           }} />
           <h1>Indexly</h1>
-          <p>200+ search engines पर index करो — एक click में</p>
+          <p>Index your website on 200+ search engines — instantly.</p>
         </div>
 
         {/* Toggle */}
@@ -64,14 +81,16 @@ export default function LoginPage() {
           <button
             onClick={() => { setMode('login'); setError(''); setSuccess('') }}
             style={{
-              flex: 1, padding: '8px', borderRadius: 6, background: mode === 'login' ? 'var(--accent)' : 'transparent',
+              flex: 1, padding: '8px', borderRadius: 6,
+              background: mode === 'login' ? 'var(--accent)' : 'transparent',
               color: mode === 'login' ? 'white' : 'var(--muted)', fontSize: 14
             }}
           >Login</button>
           <button
             onClick={() => { setMode('signup'); setError(''); setSuccess('') }}
             style={{
-              flex: 1, padding: '8px', borderRadius: 6, background: mode === 'signup' ? 'var(--accent)' : 'transparent',
+              flex: 1, padding: '8px', borderRadius: 6,
+              background: mode === 'signup' ? 'var(--accent)' : 'transparent',
               color: mode === 'signup' ? 'white' : 'var(--muted)', fontSize: 14
             }}
           >Sign Up</button>
@@ -83,38 +102,65 @@ export default function LoginPage() {
           {success && <div className="success-msg">{success}</div>}
 
           <div>
-            <label style={{ fontSize: 13, color: 'var(--muted)', display: 'block', marginBottom: 6 }}>Email</label>
+            <label style={{ fontSize: 13, color: 'var(--muted)', display: 'block', marginBottom: 6 }}>
+              Email Address
+            </label>
             <input
               type="email"
               placeholder="you@example.com"
               value={email}
               onChange={e => setEmail(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+              autoComplete="email"
             />
           </div>
 
           <div>
-            <label style={{ fontSize: 13, color: 'var(--muted)', display: 'block', marginBottom: 6 }}>Password</label>
+            <label style={{ fontSize: 13, color: 'var(--muted)', display: 'block', marginBottom: 6 }}>
+              Password
+            </label>
             <input
               type="password"
               placeholder="••••••••"
               value={password}
               onChange={e => setPassword(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && handleSubmit()}
+              autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
             />
+            {mode === 'signup' && (
+              <p style={{ fontSize: 11, color: 'var(--muted)', marginTop: 4 }}>
+                Minimum 6 characters
+              </p>
+            )}
           </div>
 
           <button className="btn-primary" onClick={handleSubmit} disabled={loading}>
-            {loading ? <span className="spinner" /> : mode === 'login' ? 'Login करो' : 'Account बनाओ'}
+            {loading
+              ? <span className="spinner" />
+              : mode === 'login' ? 'Login' : 'Create Account'
+            }
           </button>
         </div>
 
         <p style={{ textAlign: 'center', fontSize: 13, color: 'var(--muted)', marginTop: 16 }}>
-          {mode === 'login' ? 'नया account चाहिए?' : 'पहले से account है?'}{' '}
-          <a href="#" onClick={e => { e.preventDefault(); setMode(mode === 'login' ? 'signup' : 'login'); setError(''); setSuccess('') }}>
-            {mode === 'login' ? 'Sign Up करो' : 'Login करो'}
+          {mode === 'login' ? "Don't have an account?" : 'Already have an account?'}{' '}
+          <a href="#" onClick={e => {
+            e.preventDefault()
+            setMode(mode === 'login' ? 'signup' : 'login')
+            setError('')
+            setSuccess('')
+          }}>
+            {mode === 'login' ? 'Sign up' : 'Log in'}
           </a>
         </p>
+
+        {mode === 'login' && (
+          <p style={{ textAlign: 'center', fontSize: 12, color: 'var(--muted)', marginTop: 8 }}>
+            <a href="/docs">Documentation</a>
+            {' · '}
+            <a href="mailto:support@indexly.app">Support</a>
+          </p>
+        )}
       </div>
     </div>
   )

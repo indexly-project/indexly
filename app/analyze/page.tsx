@@ -161,7 +161,7 @@ function AnalyzeContent() {
         {/* Header */}
         <div style={{ marginBottom: 24 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 4 }}>
-            <a href="/dashboard" style={{ color: 'var(--muted)', fontSize: 13 }}>← Dashboard</a>
+            <a href="/dashboard" style={{ color: 'var(--muted)', fontSize: 13 }}>← Back to Dashboard</a>
           </div>
           <h2 style={{ marginBottom: 4 }}>{website?.value}</h2>
           <span className={`badge ${website?.status === 'indexed' ? 'badge-success' : 'badge-pending'}`}>
@@ -173,10 +173,10 @@ function AnalyzeContent() {
         {notReady && (
           <div className="card" style={{ textAlign: 'center', padding: 40 }}>
             <div style={{ fontSize: 40, marginBottom: 16 }}>⏳</div>
-            <h3 style={{ marginBottom: 8 }}>Analytics अभी तैयार नहीं है</h3>
+            <h3 style={{ marginBottom: 8 }}>Analytics Not Ready Yet</h3>
             <p style={{ color: 'var(--muted)', fontSize: 14 }}>
-              Indexing के 24 घंटे बाद data आना शुरू होगा।<br />
-              कल आना।
+              Data will start appearing 24 hours after indexing.<br />
+              Please check back tomorrow.
             </p>
           </div>
         )}
@@ -185,9 +185,9 @@ function AnalyzeContent() {
         {!notReady && analytics.length === 0 && (
           <div className="card" style={{ textAlign: 'center', padding: 40 }}>
             <div style={{ fontSize: 40, marginBottom: 16 }}>📊</div>
-            <h3 style={{ marginBottom: 8 }}>Data आना शुरू नहीं हुआ</h3>
+            <h3 style={{ marginBottom: 8 }}>No Data Yet</h3>
             <p style={{ color: 'var(--muted)', fontSize: 14 }}>
-              Search engines से data आने में 24-48 घंटे लगते हैं।
+              It can take 24-48 hours for search engine data to appear.
             </p>
           </div>
         )}
@@ -286,7 +286,7 @@ function AnalyzeContent() {
               <div className="card">
                 <h3 style={{ marginBottom: 4 }}>Search Intent Pulse</h3>
                 <p style={{ color: 'var(--muted)', fontSize: 13, marginBottom: 20 }}>
-                  तुम्हारे visitors क्या चाहते हैं — और यह time के साथ कैसे बदल रहा है?
+                  What your visitors are looking for — and how it shifts over time.
                 </p>
 
                 {/* Legend */}
@@ -392,7 +392,7 @@ function CommentsSection({ websiteId, userId }: { websiteId: string; userId: str
           style={{ marginBottom: 10, resize: 'none' }}
         />
         <button className="btn-primary" onClick={postComment} disabled={loading}>
-          {loading ? <span className="spinner" /> : 'Post करो'}
+          {loading ? <span className="spinner" /> : 'Post Comment'}
         </button>
       </div>
 

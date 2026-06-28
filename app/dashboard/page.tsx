@@ -71,15 +71,11 @@ export default function Dashboard() {
     if (data) setWebsites(data)
   }
 
-  // Timer countdown
   const startTimer = () => {
     setTimer(30)
     timerRef.current = setInterval(() => {
       setTimer(prev => {
-        if (prev <= 1) {
-          clearInterval(timerRef.current)
-          return 0
-        }
+        if (prev <= 1) { clearInterval(timerRef.current); return 0 }
         return prev - 1
       })
     }, 1000)
@@ -88,7 +84,7 @@ export default function Dashboard() {
   const handleNext = async () => {
     setError('')
     if (!urlValue.trim()) {
-      setError('URL या Domain डालो।')
+      setError('Please enter a URL or domain name.')
       return
     }
 
@@ -110,21 +106,20 @@ export default function Dashboard() {
       })
 
       const data = await res.json()
+      clearInterval(timerRef.current)
 
       if (data.error === 'already_indexed') {
-        setError('यह website पहले से indexed है!')
+        setError('This website is already indexed!')
         setStep('input')
         setLoading(false)
         return
       }
-
       if (data.error === 'daily_limit') {
-        setError('आज की limit पूरी हो गई। कल आना।')
+        setError('Daily limit reached. Please come back in 24 hours.')
         setStep('input')
         setLoading(false)
         return
       }
-
       if (data.error) {
         setError(data.error)
         setStep('input')
@@ -132,9 +127,6 @@ export default function Dashboard() {
         return
       }
 
-      clearInterval(timerRef.current)
-
-      // Website ID लाओ
       const { data: ws } = await supabase
         .from('websites')
         .select('id')
@@ -146,7 +138,7 @@ export default function Dashboard() {
       setTokenData(data)
       setStep('codes')
     } catch {
-      setError('कुछ गड़बड़ हो गई। दोबारा try करो।')
+      setError('Something went wrong. Please try again.')
       setStep('input')
     }
     setLoading(false)
@@ -175,7 +167,7 @@ export default function Dashboard() {
       setStep('result')
       loadWebsites(user.id)
     } catch {
-      setError('Verification में problem आई।')
+      setError('Verification failed. Please try again.')
       setStep('codes')
     }
     setLoading(false)
@@ -197,55 +189,60 @@ export default function Dashboard() {
     </div>
   )
 
+  const baseUrl = urlValue.startsWith('http')
+    ? urlValue.split('/').slice(0, 3).join('/')
+    : `https://${urlValue.split('/')[0]}`
+
   return (
     <>
       <Navbar email={user.email} />
-
       <div className="main-wrap">
 
         {/* Step indicators */}
         <div className="steps">
-          {(['input', 'timer', 'codes', 'verify', 'result'] as Step[]).map((s, i) => (
-            <div key={s} className={`step ${step === s ? 'active' : ['result', 'verify', 'codes', 'timer'].indexOf(step) > ['result', 'verify', 'codes', 'timer'].indexOf(s) || step === 'result' ? 'done' : ''}`} />
-          ))}
+          {(['input', 'timer', 'codes', 'verify', 'result'] as Step[]).map((s) => {
+            const order = ['input', 'timer', 'codes', 'verify', 'result']
+            const currentIdx = order.indexOf(step)
+            const sIdx = order.indexOf(s)
+            return (
+              <div key={s} className={`step ${step === s ? 'active' : sIdx < currentIdx ? 'done' : ''}`} />
+            )
+          })}
         </div>
 
-        {/* ─── STEP 1: Input ─── */}
+        {/* STEP 1: Input */}
         {step === 'input' && (
           <div>
-            <h2 style={{ marginBottom: 6 }}>Website Index करो</h2>
+            <h2 style={{ marginBottom: 6 }}>Index Your Website</h2>
             <p style={{ color: 'var(--muted)', fontSize: 14, marginBottom: 24 }}>
-              200+ search engines पर automatically index हो जाएगी।
+              Get indexed on Google, Bing, Yandex, Naver and 200+ more — in 2 steps.
             </p>
 
             {error && <div className="error-msg" style={{ marginBottom: 16 }}>{error}</div>}
 
             <div className="card" style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
-
-              {/* Type select */}
               <div>
                 <label style={{ fontSize: 13, color: 'var(--muted)', display: 'block', marginBottom: 10 }}>
-                  क्या index करना है?
+                  What would you like to index?
                 </label>
                 <div className="radio-group">
                   <label className={`radio-option ${inputType === 'url' ? 'selected' : ''}`} onClick={() => setInputType('url')}>
-                    <input type="radio" />
+                    <input type="radio" readOnly checked={inputType === 'url'} />
                     <div>
                       <div style={{ fontWeight: 600, fontSize: 14 }}>🔗 URL</div>
-                      <div style={{ fontSize: 12, color: 'var(--muted)' }}>एक specific page</div>
+                      <div style={{ fontSize: 12, color: 'var(--muted)' }}>A specific page</div>
                     </div>
                   </label>
                   <label className={`radio-option ${inputType === 'domain' ? 'selected' : ''}`} onClick={() => setInputType('domain')}>
-                    <input type="radio" />
+                    <input type="radio" readOnly checked={inputType === 'domain'} />
                     <div>
                       <div style={{ fontWeight: 600, fontSize: 14 }}>🌐 Domain</div>
-                      <div style={{ fontSize: 12, color: 'var(--muted)' }}>पूरी website</div>
+                      <div style={{ fontSize: 12, color: 'var(--muted)' }}>Entire website</div>
                     </div>
                   </label>
                 </div>
               </div>
 
-              {/* URL Input */}
               <div>
                 <label style={{ fontSize: 13, color: 'var(--muted)', display: 'block', marginBottom: 6 }}>
                   {inputType === 'url' ? 'Page URL' : 'Domain Name'}
@@ -259,15 +256,17 @@ export default function Dashboard() {
                 />
               </div>
 
-              {/* Checklist */}
               <div style={{ background: '#111', borderRadius: 8, padding: 14, fontSize: 13 }}>
-                <div style={{ color: 'var(--muted)', marginBottom: 8, fontWeight: 600 }}>पहले confirm करो:</div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                  <div>✅ तुम्हारी website live है</div>
-                  <div>✅ sitemap.xml है (myblog.com/sitemap.xml)</div>
-                  <div>✅ robots.txt है (myblog.com/robots.txt)</div>
-                  <div>✅ HTML files edit कर सकते हो</div>
+                <div style={{ color: 'var(--muted)', marginBottom: 8, fontWeight: 600 }}>Before you continue, make sure:</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 5 }}>
+                  <div>✅ Your website is live and accessible</div>
+                  <div>✅ You have a sitemap.xml (myblog.com/sitemap.xml)</div>
+                  <div>✅ You have a robots.txt (myblog.com/robots.txt)</div>
+                  <div>✅ You can edit your HTML files</div>
                 </div>
+                <a href="/docs" style={{ fontSize: 12, display: 'block', marginTop: 10 }}>
+                  Need help setting these up? Read the docs →
+                </a>
               </div>
 
               <button className="btn-primary" onClick={handleNext} disabled={loading}>
@@ -278,15 +277,15 @@ export default function Dashboard() {
             {/* Previous websites */}
             {websites.length > 0 && (
               <div style={{ marginTop: 32 }}>
-                <h3 style={{ marginBottom: 14, fontSize: 16 }}>तुम्हारी Websites</h3>
+                <h3 style={{ marginBottom: 14, fontSize: 16 }}>Your Websites</h3>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
                   {websites.map(w => (
                     <div key={w.id} className="card" style={{ padding: '14px 16px' }}>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8 }}>
                         <div>
                           <div style={{ fontWeight: 500, fontSize: 14 }}>{w.value}</div>
                           <div style={{ fontSize: 12, color: 'var(--muted)', marginTop: 2 }}>
-                            {new Date(w.created_at).toLocaleDateString('hi-IN')}
+                            {new Date(w.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
                           </div>
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
@@ -306,94 +305,87 @@ export default function Dashboard() {
           </div>
         )}
 
-        {/* ─── STEP 2: Timer ─── */}
+        {/* STEP 2: Timer */}
         {step === 'timer' && (
           <div style={{ textAlign: 'center', paddingTop: 40 }}>
             <div className="timer-circle">{timer}</div>
-            <h2 style={{ marginBottom: 10 }}>Codes Generate हो रहे हैं...</h2>
-            <p style={{ color: 'var(--muted)' }}>
-              Google और IndexNow से verification codes आ रहे हैं।
+            <h2 style={{ marginBottom: 10 }}>Generating your verification codes...</h2>
+            <p style={{ color: 'var(--muted)', fontSize: 14 }}>
+              Fetching tokens from Google and IndexNow. Please wait.
             </p>
-            <div style={{ marginTop: 20 }}>
-              <div className="spinner" style={{ width: 24, height: 24, margin: '0 auto' }} />
-            </div>
           </div>
         )}
 
-        {/* ─── STEP 3: Codes ─── */}
+        {/* STEP 3: Codes */}
         {step === 'codes' && tokenData && (
           <div>
-            <h2 style={{ marginBottom: 6 }}>यह codes अपनी website में लगाओ</h2>
+            <h2 style={{ marginBottom: 6 }}>Add these to your website</h2>
             <p style={{ color: 'var(--muted)', fontSize: 14, marginBottom: 24 }}>
-              2 steps हैं — दोनों करो फिर Verify click करो।
+              Complete both steps, then click Verify.
             </p>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-
-              {/* Step A - Meta tags */}
               <div className="card">
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
-                  <div style={{ background: 'var(--accent)', color: 'white', width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700 }}>1</div>
+                  <div style={{ background: 'var(--accent)', color: 'white', width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, flexShrink: 0 }}>1</div>
                   <div>
-                    <div style={{ fontWeight: 600 }}>यह code copy करो</div>
-                    <div style={{ fontSize: 12, color: 'var(--muted)' }}>अपने index.html के &lt;head&gt; में paste करो</div>
+                    <div style={{ fontWeight: 600 }}>Copy this code block</div>
+                    <div style={{ fontSize: 12, color: 'var(--muted)' }}>Paste it inside the &lt;head&gt; tag of your index.html</div>
                   </div>
                 </div>
                 <CopyBox text={`${tokenData.meta_tag}\n${tokenData.our_meta_tag}`} />
               </div>
 
-              {/* Step B - File */}
               <div className="card">
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 14 }}>
-                  <div style={{ background: 'var(--accent)', color: 'white', width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700 }}>2</div>
+                  <div style={{ background: 'var(--accent)', color: 'white', width: 28, height: 28, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 13, fontWeight: 700, flexShrink: 0 }}>2</div>
                   <div>
-                    <div style={{ fontWeight: 600 }}>यह file बनाओ</div>
-                    <div style={{ fontSize: 12, color: 'var(--muted)' }}>अपनी website के root folder में upload करो</div>
+                    <div style={{ fontWeight: 600 }}>Create this file</div>
+                    <div style={{ fontSize: 12, color: 'var(--muted)' }}>Upload it to the root folder of your website</div>
                   </div>
                 </div>
-                <div style={{ marginBottom: 10, fontSize: 13, color: 'var(--muted)' }}>
-                  File का नाम: <code style={{ color: 'var(--accent)' }}>{tokenData.indexnow_file_name}</code>
+                <div style={{ marginBottom: 8, fontSize: 13 }}>
+                  File name: <code style={{ color: 'var(--accent)', background: '#111', padding: '2px 6px', borderRadius: 4 }}>{tokenData.indexnow_file_name}</code>
                 </div>
-                <div style={{ marginBottom: 10, fontSize: 13, color: 'var(--muted)' }}>File का content:</div>
+                <div style={{ marginBottom: 8, fontSize: 13, color: 'var(--muted)' }}>File content:</div>
                 <CopyBox text={tokenData.indexnow_file_content} />
                 <div style={{ marginTop: 10, fontSize: 12, color: 'var(--muted)' }}>
-                  यह file यहाँ accessible होनी चाहिए:<br />
+                  Must be accessible at:<br />
                   <code style={{ color: 'var(--accent)', fontSize: 11 }}>
-                    {urlValue.startsWith('http') ? urlValue.split('/').slice(0, 3).join('/') : `https://${urlValue.split('/')[0]}`}/{tokenData.indexnow_file_name}
+                    {baseUrl}/{tokenData.indexnow_file_name}
                   </code>
                 </div>
               </div>
 
-              {/* Warning */}
               <div style={{ background: '#2d2a1a', border: '1px solid var(--warning)', borderRadius: 8, padding: 12, fontSize: 13, color: 'var(--warning)' }}>
-                ⚠️ दोनों steps complete करने के बाद ही Verify click करो।
+                ⚠️ Make sure both steps are done before clicking Verify.
               </div>
 
               {error && <div className="error-msg">{error}</div>}
 
               <div style={{ display: 'flex', gap: 10 }}>
-                <button className="btn-secondary" onClick={reset} style={{ flex: 1 }}>← वापस</button>
+                <button className="btn-secondary" onClick={reset} style={{ flex: 1 }}>← Back</button>
                 <button className="btn-primary" onClick={handleVerify} style={{ flex: 2 }} disabled={loading}>
-                  {loading ? <span className="spinner" /> : 'Verify करो →'}
+                  {loading ? <span className="spinner" /> : 'Verify & Index →'}
                 </button>
               </div>
             </div>
           </div>
         )}
 
-        {/* ─── STEP 4: Verifying ─── */}
+        {/* STEP 4: Verifying */}
         {step === 'verify' && (
           <div style={{ textAlign: 'center', paddingTop: 40 }}>
             <div className="spinner" style={{ width: 40, height: 40, margin: '0 auto 20px' }} />
-            <h2 style={{ marginBottom: 10 }}>Verify हो रहा है...</h2>
-            <p style={{ color: 'var(--muted)', fontSize: 14 }}>
-              तुम्हारी website crawl हो रही है।<br />
-              Google और IndexNow को request जा रही है।
+            <h2 style={{ marginBottom: 10 }}>Verifying your website...</h2>
+            <p style={{ color: 'var(--muted)', fontSize: 14, lineHeight: 1.7 }}>
+              Crawling your site and checking all verification codes.<br />
+              Sending requests to Google and IndexNow.
             </p>
           </div>
         )}
 
-        {/* ─── STEP 5: Result ─── */}
+        {/* STEP 5: Result */}
         {step === 'result' && verifyResult && (
           <div>
             <div style={{ textAlign: 'center', marginBottom: 28 }}>
@@ -401,17 +393,16 @@ export default function Dashboard() {
                 {verifyResult.success ? '🎉' : '⚠️'}
               </div>
               <h2 style={{ marginBottom: 8 }}>
-                {verifyResult.success ? 'Index हो गया!' : 'कुछ problem है'}
+                {verifyResult.success ? 'Successfully Indexed!' : 'Some issues found'}
               </h2>
               <p style={{ color: 'var(--muted)', fontSize: 14 }}>{verifyResult.message}</p>
             </div>
 
-            {/* Crawl results */}
             <div className="card" style={{ marginBottom: 16 }}>
               <div style={{ fontWeight: 600, marginBottom: 14 }}>Website Crawl Results</div>
               <div className="status-list">
                 {[
-                  { label: 'हमारा Meta Tag', key: 'our_meta' },
+                  { label: 'Indexly Meta Tag', key: 'our_meta' },
                   { label: 'Google Meta Tag', key: 'google_meta' },
                   { label: 'IndexNow Key File', key: 'indexnow_file' },
                   { label: 'sitemap.xml', key: 'sitemap' },
@@ -419,31 +410,33 @@ export default function Dashboard() {
                 ].map(item => (
                   <div key={item.key} className="status-item">
                     <span className="engine-name">{item.label}</span>
-                    <span>{verifyResult.results.crawl[item.key as keyof typeof verifyResult.results.crawl] ? '✅ मिला' : '❌ नहीं मिला'}</span>
+                    <span style={{ fontSize: 13 }}>
+                      {verifyResult.results.crawl[item.key as keyof typeof verifyResult.results.crawl]
+                        ? '✅ Found'
+                        : '❌ Not found'}
+                    </span>
                   </div>
                 ))}
               </div>
             </div>
 
-            {/* Verification results */}
             <div className="card" style={{ marginBottom: 16 }}>
               <div style={{ fontWeight: 600, marginBottom: 14 }}>Search Engine Verification</div>
               <div className="status-list">
                 <div className="status-item">
                   <span className="engine-name">🔍 Google</span>
-                  <span>{verifyResult.results.verification.google ? '✅ Verified' : '❌ Failed'}</span>
+                  <span style={{ fontSize: 13 }}>{verifyResult.results.verification.google ? '✅ Verified' : '❌ Failed'}</span>
                 </div>
                 <div className="status-item">
-                  <span className="engine-name">⚡ IndexNow (Bing+Yandex+Naver+...)</span>
-                  <span>{verifyResult.results.verification.indexnow ? '✅ Submitted' : '❌ Failed'}</span>
+                  <span className="engine-name">⚡ IndexNow (Bing · Yandex · Naver · +)</span>
+                  <span style={{ fontSize: 13 }}>{verifyResult.results.verification.indexnow ? '✅ Submitted' : '❌ Failed'}</span>
                 </div>
               </div>
             </div>
 
-            {/* Errors */}
             {verifyResult.results.errors.length > 0 && (
               <div className="card" style={{ marginBottom: 16, border: '1px solid var(--warning)' }}>
-                <div style={{ fontWeight: 600, marginBottom: 10, color: 'var(--warning)' }}>Issues:</div>
+                <div style={{ fontWeight: 600, marginBottom: 10, color: 'var(--warning)' }}>Issues to fix:</div>
                 {verifyResult.results.errors.map((e, i) => (
                   <div key={i} style={{ fontSize: 13, color: 'var(--muted)', padding: '4px 0' }}>• {e}</div>
                 ))}
@@ -453,16 +446,16 @@ export default function Dashboard() {
             {verifyResult.success ? (
               <div>
                 <div className="success-msg" style={{ marginBottom: 16, textAlign: 'center' }}>
-                  🕐 24 घंटे बाद analytics देखो
+                  🕐 Analytics will be available in 24 hours.
                 </div>
                 <a href={`/analyze?id=${websiteId}`}>
-                  <button className="btn-primary">Analytics देखो →</button>
+                  <button className="btn-primary">View Analytics →</button>
                 </a>
               </div>
             ) : (
               <div style={{ display: 'flex', gap: 10 }}>
-                <button className="btn-secondary" onClick={reset} style={{ flex: 1 }}>नई website</button>
-                <button className="btn-primary" onClick={() => setStep('codes')} style={{ flex: 2 }}>फिर से try करो →</button>
+                <button className="btn-secondary" onClick={reset} style={{ flex: 1 }}>New Website</button>
+                <button className="btn-primary" onClick={() => setStep('codes')} style={{ flex: 2 }}>Try Again →</button>
               </div>
             )}
           </div>
