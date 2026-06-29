@@ -215,7 +215,7 @@ export default function Dashboard() {
           <div>
             <h2 style={{ marginBottom: 6 }}>Index Your Website</h2>
             <p style={{ color: 'var(--muted)', fontSize: 14, marginBottom: 24 }}>
-              Get indexed on Google, Bing, Yandex, Naver and 200+ more — in 2 steps.
+              Your website will appear on Google, Bing, Yahoo, Yandex, DuckDuckGo and 200+ more search engines.
             </p>
 
             {error && <div className="error-msg" style={{ marginBottom: 16 }}>{error}</div>}
@@ -311,7 +311,7 @@ export default function Dashboard() {
             <div className="timer-circle">{timer}</div>
             <h2 style={{ marginBottom: 10 }}>Generating your verification codes...</h2>
             <p style={{ color: 'var(--muted)', fontSize: 14 }}>
-              Fetching tokens from Google and IndexNow. Please wait.
+              Preparing your unique codes for all search engines. Please wait.
             </p>
           </div>
         )}
@@ -379,8 +379,8 @@ export default function Dashboard() {
             <div className="spinner" style={{ width: 40, height: 40, margin: '0 auto 20px' }} />
             <h2 style={{ marginBottom: 10 }}>Hang tight, we're on it! 🚀</h2>
             <p style={{ color: 'var(--muted)', fontSize: 14, lineHeight: 1.7 }}>
-              Scanning your website for verification codes...<br />
-              Notifying search engines worldwide...
+              Verifying your website ownership...<br />
+              Submitting to search engines worldwide...
             </p>
           </div>
         )}
@@ -402,9 +402,9 @@ export default function Dashboard() {
               <div style={{ fontWeight: 600, marginBottom: 14 }}>Website Crawl Results</div>
               <div className="status-list">
                 {[
-                  { label: 'Indexly Meta Tag', key: 'our_meta' },
-                  { label: 'Google Meta Tag', key: 'google_meta' },
-                  { label: 'IndexNow Key File', key: 'indexnow_file' },
+                  { label: 'Indexly Verification Tag', key: 'our_meta' },
+                  { label: 'Ownership Verification Tag', key: 'google_meta' },
+                  { label: 'Search Engine Key File', key: 'indexnow_file' },
                   { label: 'sitemap.xml', key: 'sitemap' },
                   { label: 'robots.txt', key: 'robots' },
                 ].map(item => (
@@ -421,14 +421,14 @@ export default function Dashboard() {
             </div>
 
             <div className="card" style={{ marginBottom: 16 }}>
-              <div style={{ fontWeight: 600, marginBottom: 14 }}>Search Engine Verification</div>
+              <div style={{ fontWeight: 600, marginBottom: 14 }}>Search Engine Coverage</div>
               <div className="status-list">
                 <div className="status-item">
-                  <span className="engine-name">🔍 Google</span>
+                  <span className="engine-name">🔍 Primary Search Engine</span>
                   <span style={{ fontSize: 13 }}>{verifyResult.results.verification.google ? '✅ Verified' : '❌ Failed'}</span>
                 </div>
                 <div className="status-item">
-                  <span className="engine-name">⚡ IndexNow (Bing · Yandex · Naver · +)</span>
+                  <span className="engine-name">⚡ Global Network (Bing, Yahoo, Yandex, DuckDuckGo +)</span>
                   <span style={{ fontSize: 13 }}>{verifyResult.results.verification.indexnow ? '✅ Submitted' : '❌ Failed'}</span>
                 </div>
               </div>
