@@ -377,10 +377,10 @@ export default function Dashboard() {
         {step === 'verify' && (
           <div style={{ textAlign: 'center', paddingTop: 40 }}>
             <div className="spinner" style={{ width: 40, height: 40, margin: '0 auto 20px' }} />
-            <h2 style={{ marginBottom: 10 }}>Verifying your website...</h2>
+            <h2 style={{ marginBottom: 10 }}>Hang tight, we're on it! 🚀</h2>
             <p style={{ color: 'var(--muted)', fontSize: 14, lineHeight: 1.7 }}>
-              Crawling your site and checking all verification codes.<br />
-              Sending requests to Google and IndexNow.
+              Scanning your website for verification codes...<br />
+              Notifying search engines worldwide...
             </p>
           </div>
         )}
