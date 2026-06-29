@@ -27,10 +27,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
+        <meta name="google-site-verification" content="Um4CIb6wu_DDi2IfiWFVAEd2Ddkx8hjWSj3ZMYQp14Y" />
+        <meta name="indexed-by" content="Indexly" data-indexly-id="idx-gp91hupe1wn2473u" />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/logo.png" />
-        {/* Indexly self-verification tag */}
-        <meta name="indexed-by" content="Indexly" data-indexly-id="SELF" />
       </head>
       <body>{children}</body>
     </html>
