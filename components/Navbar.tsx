@@ -17,7 +17,7 @@ export default function Navbar({ email }: { email?: string }) {
       </Link>
       <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
         <Link href="/docs" style={{ fontSize: 13, color: 'var(--muted)' }}>Docs</Link>
-        {email && <span style={{ fontSize: 13, color: 'var(--muted)', maxWidth: 130, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', display: 'none' }} className="nav-email">{email}</span>}
+        {email && <span style={{ fontSize: 13, color: 'var(--muted)', maxWidth: 130, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }} className="nav-email">{email}</span>}
         <button className="btn-secondary" onClick={logout} style={{ padding: '6px 14px', fontSize: 13 }}>Logout</button>
       </div>
     </nav>
