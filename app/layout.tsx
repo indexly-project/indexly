@@ -89,6 +89,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <meta name="google-site-verification" content="Um4CIb6wu_DDi2IfiWFVAEd2Ddkx8hjWSj3ZMYQp14Y" />
         <meta name="indexed-by" content="Indexly" data-indexly-id="idx-u5yj4fchkf7vr9uu" />
+        <script src="https://indexly-snowy.vercel.app/track.js" data-site-id="idx-u5yj4fchkf7vr9uu" defer></script>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaWebApp) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaOrg) }} />
       </head>
