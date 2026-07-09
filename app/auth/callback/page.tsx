@@ -2,20 +2,12 @@
 import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase'
-
 export default function AuthCallback() {
   const router = useRouter()
   useEffect(() => {
-    const supabase = createClient()
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) router.replace('/dashboard')
-      else router.replace('/auth/login')
+    createClient().auth.getSession().then(({ data: { session } }) => {
+      router.replace(session ? '/dashboard' : '/auth/login')
     })
   }, [router])
-
-  return (
-    <div className="page-center">
-      <div className="spinner" style={{ width: 32, height: 32 }} />
-    </div>
-  )
+  return <div className="page-center"><div className="spinner" style={{ width: 32, height: 32 }} /></div>
 }

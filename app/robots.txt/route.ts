@@ -1,6 +1,5 @@
 export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://indexly-snowy.vercel.app'
-
+  const base = process.env.NEXT_PUBLIC_APP_URL || 'https://indexly-snowy.vercel.app'
   const txt = `User-agent: *
 Allow: /
 Disallow: /dashboard
@@ -22,12 +21,6 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: ${baseUrl}/sitemap.xml`
-
-  return new Response(txt, {
-    headers: {
-      'Content-Type': 'text/plain',
-      'Cache-Control': 'public, max-age=86400',
-    },
-  })
+Sitemap: ${base}/sitemap.xml`
+  return new Response(txt, { headers: { 'Content-Type': 'text/plain', 'Cache-Control': 'public, max-age=86400' } })
 }
