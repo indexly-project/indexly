@@ -21,7 +21,7 @@ interface VerifyResult {
   message: string
   results: {
     crawl: { our_meta: boolean; google_meta: boolean; indexnow_file: boolean; sitemap: boolean; robots: boolean }
-    verification: { google: boolean; indexnow: boolean; brave: boolean; mojeek: boolean }
+    verification: { google: boolean; indexnow: boolean }
     errors: string[]
   }
 }
@@ -180,7 +180,7 @@ export default function Dashboard() {
           <div>
             <h2 style={{ marginBottom: 6 }}>Index Your Website</h2>
             <p style={{ color: 'var(--muted)', fontSize: 14, marginBottom: 24 }}>
-              Your website will appear on all 16 search engines — Google, Bing, Yandex, Brave, Naver and more.
+              Your website will appear on all 14 search engines — Google, Bing, Yandex, Naver and more.
             </p>
 
             {error && <div className="error-msg" style={{ marginBottom: 16 }}>{error}</div>}
@@ -257,7 +257,7 @@ export default function Dashboard() {
           <div style={{ textAlign: 'center', paddingTop: 40 }}>
             <div className="timer-circle">{timer}</div>
             <h2 style={{ marginBottom: 10 }}>Generating your verification codes...</h2>
-            <p style={{ color: 'var(--muted)', fontSize: 14 }}>Preparing unique codes for all 16 search engines. Please wait.</p>
+            <p style={{ color: 'var(--muted)', fontSize: 14 }}>Preparing unique codes for all 14 search engines. Please wait.</p>
           </div>
         )}
 
@@ -320,7 +320,7 @@ export default function Dashboard() {
             <h2 style={{ marginBottom: 10 }}>Hang tight, we're on it! 🚀</h2>
             <p style={{ color: 'var(--muted)', fontSize: 14, lineHeight: 1.7 }}>
               Scanning your website for verification codes...<br />
-              Submitting to all 16 search engines...
+              Submitting to all 14 search engines...
             </p>
           </div>
         )}
@@ -366,14 +366,6 @@ export default function Dashboard() {
                 <div className="status-item">
                   <span className="engine-name">⚡ Global Network (Bing · Yandex · Naver · +8)</span>
                   <span style={{ fontSize: 13 }}>{verifyResult.results.verification.indexnow ? '✅ Submitted' : '❌ Failed'}</span>
-                </div>
-                <div className="status-item">
-                  <span className="engine-name">🦁 Brave Search</span>
-                  <span style={{ fontSize: 13 }}>{verifyResult.results.verification.brave ? '✅ Submitted' : '⚠️ Skipped'}</span>
-                </div>
-                <div className="status-item">
-                  <span className="engine-name">🔍 Mojeek</span>
-                  <span style={{ fontSize: 13 }}>{verifyResult.results.verification.mojeek ? '✅ Submitted' : '⚠️ Skipped'}</span>
                 </div>
               </div>
             </div>

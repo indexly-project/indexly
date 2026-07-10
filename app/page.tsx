@@ -11,8 +11,6 @@ const ENGINES = [
   { name: 'Naver', flag: '🟢', desc: 'South Korea' },
   { name: 'Seznam', flag: '🔵', desc: 'Czech Republic' },
   { name: 'Yep', flag: '⭐', desc: 'Independent' },
-  { name: 'Brave Search', flag: '🦁', desc: 'Privacy-First' },
-  { name: 'Mojeek', flag: '🔍', desc: 'UK Crawler' },
   { name: 'Yahoo', flag: '🟣', desc: 'via Bing' },
   { name: 'DuckDuckGo', flag: '🦆', desc: 'via Bing' },
   { name: 'Ecosia', flag: '🌱', desc: 'via Bing' },
@@ -52,10 +50,10 @@ export default function Home() {
       <div style={{ textAlign: 'center', padding: '80px 24px 60px', maxWidth: 700, margin: '0 auto' }}>
         <div style={{ display: 'inline-block', background: '#1a2040', border: '1px solid var(--accent)', color: 'var(--accent)', padding: '4px 14px', borderRadius: 20, fontSize: 12, fontWeight: 600, marginBottom: 20 }}>FREE & OPEN SOURCE</div>
         <h1 style={{ fontSize: 'clamp(30px,6vw,50px)', fontWeight: 800, lineHeight: 1.15, marginBottom: 20 }}>
-          Index Your Website on<br /><span style={{ color: 'var(--accent)' }}>16 Search Engines</span><br />in 2 Steps
+          Index Your Website on<br /><span style={{ color: 'var(--accent)' }}>14 Search Engines</span><br />in 2 Steps
         </h1>
         <p style={{ color: 'var(--muted)', fontSize: 16, lineHeight: 1.7, marginBottom: 36, maxWidth: 520, margin: '0 auto 36px' }}>
-          Submit once, appear everywhere. Google, Bing, Yandex, Brave, Naver, DuckDuckGo, Yahoo and more — no separate accounts needed.
+          Submit once, appear everywhere. Google, Bing, Yandex, Naver, DuckDuckGo, Yahoo and more — no separate accounts needed.
         </p>
         <div style={{ display: 'flex', gap: 12, justifyContent: 'center', flexWrap: 'wrap' }}>
           <Link href="/auth/login"><button className="btn-primary" style={{ width: 'auto', padding: '14px 32px', fontSize: 16, fontWeight: 600 }}>Start Indexing Free →</button></Link>
@@ -65,7 +63,7 @@ export default function Home() {
       </div>
 
       <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', background: 'var(--surface)', marginBottom: 60 }}>
-        {[{ n: '16', label: 'Search Engines' }, { n: '2', label: 'Steps Only' }, { n: '<3 min', label: 'Total Time' }, { n: '100%', label: 'Free Forever' }].map(s => (
+        {[{ n: '14', label: 'Search Engines' }, { n: '2', label: 'Steps Only' }, { n: '<3 min', label: 'Total Time' }, { n: '100%', label: 'Free Forever' }].map(s => (
           <div key={s.n} style={{ padding: '24px 36px', textAlign: 'center', borderRight: '1px solid var(--border)' }}>
             <div style={{ fontSize: 26, fontWeight: 800, color: 'var(--accent)' }}>{s.n}</div>
             <div style={{ fontSize: 13, color: 'var(--muted)', marginTop: 4 }}>{s.label}</div>
@@ -78,7 +76,7 @@ export default function Home() {
         {[
           { n: 1, icon: '🔗', title: 'Enter Your URL or Domain', desc: 'Sign up free and enter your website URL or full domain. Takes 10 seconds.' },
           { n: 2, icon: '📋', title: 'Add 2 Things to Your Site', desc: 'Copy one verification tag into your <head> and upload one small key file to your root. Under 2 minutes.' },
-          { n: 3, icon: '⚡', title: 'We Submit to All 16 Engines', desc: 'We verify your ownership and submit to Google, Bing, Yandex, Naver, Brave, Mojeek and the entire Bing network.' },
+          { n: 3, icon: '⚡', title: 'We Submit to All 14 Engines', desc: 'We verify your ownership and submit to Google, Bing, Yandex, Naver and the entire Bing network.' },
           { n: 4, icon: '📊', title: 'Track Real-Time Analytics', desc: 'See live visitors — countries, cities, browsers, devices and our unique Search Intent Pulse dashboard.' },
         ].map(s => (
           <div key={s.n} style={{ display: 'flex', gap: 16, padding: 20, background: 'var(--surface)', borderRadius: 12, border: '1px solid var(--border)', marginBottom: 14 }}>
@@ -101,14 +99,14 @@ export default function Home() {
             </div>
             <div style={{ flex: 1, minWidth: 240, background: '#1a2d1a', border: '1px solid #22c55e', borderRadius: 12, padding: 20 }}>
               <div style={{ color: '#22c55e', fontWeight: 700, marginBottom: 12 }}>✅ With Indexly</div>
-              {['Enter URL — 10 seconds', 'Add tag + key file — 2 minutes', 'Click Verify — done in under 3 min', 'All 16 engines covered automatically'].map(t => <div key={t} style={{ fontSize: 13, color: 'var(--muted)', padding: '4px 0' }}>• {t}</div>)}
+              {['Enter URL — 10 seconds', 'Add tag + key file — 2 minutes', 'Click Verify — done in under 3 min', 'All 14 engines covered automatically'].map(t => <div key={t} style={{ fontSize: 13, color: 'var(--muted)', padding: '4px 0' }}>• {t}</div>)}
             </div>
           </div>
         </div>
       </div>
 
       <div style={{ maxWidth: 680, margin: '0 auto', padding: '0 24px 60px' }}>
-        <h2 style={{ textAlign: 'center', fontSize: 22, fontWeight: 700, marginBottom: 8 }}>16 Search Engines Covered</h2>
+        <h2 style={{ textAlign: 'center', fontSize: 22, fontWeight: 700, marginBottom: 8 }}>14 Search Engines Covered</h2>
         <p style={{ textAlign: 'center', color: 'var(--muted)', fontSize: 14, marginBottom: 28 }}>Submit once — we handle the entire distribution</p>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(145px, 1fr))', gap: 10 }}>
           {ENGINES.map(e => (

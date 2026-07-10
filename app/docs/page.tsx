@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'Documentation — Indexly',
-  description: 'Learn how to index your website on 16 search engines using Indexly.',
+  description: 'Learn how to index your website on 14 search engines using Indexly.',
 }
 
 export default function DocsPage() {
@@ -24,7 +24,7 @@ export default function DocsPage() {
         <div style={{ marginBottom: 48 }}>
           <div style={{ display: 'inline-block', background: '#1a2040', border: '1px solid var(--accent)', color: 'var(--accent)', padding: '4px 12px', borderRadius: 20, fontSize: 12, fontWeight: 600, marginBottom: 16 }}>DOCUMENTATION</div>
           <h1 style={{ fontSize: 32, fontWeight: 800, marginBottom: 12, lineHeight: 1.2 }}>
-            Get Your Website Indexed<br />on 16 Search Engines
+            Get Your Website Indexed<br />on 14 Search Engines
           </h1>
           <p style={{ color: 'var(--muted)', fontSize: 16, lineHeight: 1.7 }}>
             Indexly is a free, open-source tool that connects your website to the world's search engine network — from major global platforms to regional engines — in just 2 simple steps.
@@ -34,7 +34,7 @@ export default function DocsPage() {
         <Section title="How It Works">
           <Step n={1} title="Sign up & enter your URL">Create a free account and enter your website URL or domain. Supports both full domains (myblog.com) and specific pages (myblog.com/about).</Step>
           <Step n={2} title="Add verification code to your site">Indexly generates a unique verification tag and a small key file. Add the tag to your homepage's &lt;head&gt; and upload the key file to your root folder.</Step>
-          <Step n={3} title="Verify & get indexed everywhere">Click Verify. Indexly scans your website, confirms ownership, and submits it across the search engine network — covering all 16 platforms at once.</Step>
+          <Step n={3} title="Verify & get indexed everywhere">Click Verify. Indexly scans your website, confirms ownership, and submits it across the search engine network — covering all 14 platforms at once.</Step>
           <Step n={4} title="Track your analytics">After 24-48 hours, view your real-time visitor analytics, Search Intent Pulse, traffic by country and city, device breakdown, and more.</Step>
         </Section>
 
@@ -60,7 +60,7 @@ export default function DocsPage() {
         <Divider />
 
         <Section title="Analytics Features">
-          <AnalyticsItem icon="🔍" title="Search Engine Coverage" desc="See which of the 16 search engines are showing your website and how much traffic each one drives." />
+          <AnalyticsItem icon="🔍" title="Search Engine Coverage" desc="See which of the 14 search engines are showing your website and how much traffic each one drives." />
           <AnalyticsItem icon="🌍" title="Countries & Cities" desc="Discover which countries and cities your real visitors come from — updated every 30 minutes." />
           <AnalyticsItem icon="📱" title="Devices & Browsers" desc="See device types (mobile, desktop, tablet) and browser breakdown for your visitors." />
           <AnalyticsItem icon="📈" title="Traffic Timeline" desc="View hourly, daily and weekly traffic trends to spot growth patterns." />
@@ -73,8 +73,8 @@ export default function DocsPage() {
           <FAQ q="Is Indexly free?" a="Yes. Indexly is 100% free and open source. We never charge for indexing or analytics." />
           <FAQ q="How long does indexing take?" a="Submissions are processed instantly. It typically takes 24–72 hours for your pages to appear in search results — this is each search engine's own crawl schedule, not Indexly's limitation." />
           <FAQ q="How many websites can I index per day?" a="Each account can index 1 website every 24 hours, ensuring fair usage for all users." />
-          <FAQ q="Do I need separate accounts on each search engine?" a="No. That is the entire point of Indexly — submit once and we distribute across all 16 engines for you." />
-          <FAQ q="Which search engines are covered?" a="Google, Microsoft Bing, Yandex, Naver, Seznam, Yep, Brave Search, Mojeek — plus Yahoo, DuckDuckGo, Ecosia, Qwant, You.com, AOL, Swisscows and ChatGPT Search via the Bing network." />
+          <FAQ q="Do I need separate accounts on each search engine?" a="No. That is the entire point of Indexly — submit once and we distribute across all 14 engines for you." />
+          <FAQ q="Which search engines are covered?" a="Google, Microsoft Bing, Yandex, Naver, Seznam, Yep — plus Yahoo, DuckDuckGo, Ecosia, Qwant, You.com, AOL, Swisscows and ChatGPT Search via the Bing network." />
           <FAQ q="Is my data private?" a="Yes. Your data is stored securely and never shared with third parties. Only you can access your analytics." />
         </Section>
 
