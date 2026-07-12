@@ -93,16 +93,16 @@ function AnalyzeContent() {
   const totalVisits = period === 'live' ? liveVisitorCount : periodData.total_visits
   const hasData = !!analyticsData?.has_data
 
-  const topCountries = (periodData.top_countries || []).map((c: any) => [c.name, c.count])
-  const topCities = (periodData.top_cities || []).map((c: any) => [`${c.country_name} / ${c.region || ''} / ${c.city}`, c.count])
+  const topCountries: [string, number][] = (periodData.top_countries || []).map((c: any): [string, number] => [c.name, c.count])
+  const topCities: [string, number][] = (periodData.top_cities || []).map((c: any): [string, number] => [`${c.country_name} / ${c.region || ''} / ${c.city}`, c.count])
   const allBrowsers: Record<string, number> = {}
   ;(periodData.top_browsers || []).forEach((b: any) => { allBrowsers[b.browser] = (allBrowsers[b.browser] || 0) + b.count })
   const allOS: Record<string, number> = {}
   ;(periodData.top_os || []).forEach((o: any) => { allOS[o.os] = (allOS[o.os] || 0) + o.count })
   const allDevices: Record<string, number> = {}
   ;(periodData.top_devices || []).forEach((d2: any) => { allDevices[d2.device_type] = (allDevices[d2.device_type] || 0) + d2.count })
-  const topPages = (periodData.top_pages || []).map((p: any) => [p.page, p.count])
-  const topReferrers = (periodData.top_referrers || []).map((r: any) => [r.referrer, r.count])
+  const topPages: [string, number][] = (periodData.top_pages || []).map((p: any): [string, number] => [p.page, p.count])
+  const topReferrers: [string, number][] = (periodData.top_referrers || []).map((r: any): [string, number] => [r.referrer, r.count])
 
   // Intent pulse from search engines
   const intentMap: Record<string, number> = { informational: 0, navigational: 0, transactional: 0, commercial: 0 }
