@@ -19,6 +19,7 @@ function AnalyzeContent() {
   const [activeTab, setActiveTab] = useState<Tab>('overview')
   const [loading, setLoading] = useState(true)
   const [analyticsData, setAnalyticsData] = useState<any>(null)
+  const [period, setPeriod] = useState<'live' | 'today' | 'week' | 'month' | 'year' | 'all'>('today')
   const [commentText, setCommentText] = useState('')
   const [rating, setRating] = useState(5)
   const [comments, setComments] = useState<any[]>([])
@@ -41,7 +42,7 @@ function AnalyzeContent() {
         const res = await fetch(`${SUPABASE_URL}/functions/v1/get-analytics`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
-          body: JSON.stringify({ website_id: websiteId }),
+          body: JSON.stringify({ website_id: websiteId, period }),
         })
         const data = await res.json()
         setAnalyticsData(data)
@@ -53,7 +54,7 @@ function AnalyzeContent() {
 
       setLoading(false)
     })
-  }, [router, websiteId, posted])
+  }, [router, websiteId, posted, period])
 
   const postComment = async () => {
     if (!commentText.trim()) return
@@ -84,46 +85,31 @@ function AnalyzeContent() {
 
   if (!user || loading) return <div className="page-center"><div className="spinner" style={{ width: 32, height: 32 }} /></div>
 
-  const today = analyticsData?.today || []
-  const weekly = analyticsData?.weekly || []
   const live = analyticsData?.live || []
+  const liveVisitorCount = analyticsData?.live_visitor_count || 0
+  const periodData = analyticsData?.data || { total_visits: 0, unique_sessions: 0, top_countries: [], top_regions: [], top_cities: [], top_pages: [], top_browsers: [], top_os: [], top_devices: [], top_referrers: [], top_search_engines: [] }
 
-  const totalVisits = today.reduce((s: number, d: any) => s + (d.total_visits || 0), 0) + live.length
-  const hasData = totalVisits > 0 || today.length > 0
+  // "Total Visits" — Live tab पर unique visitors दिखाओ, बाक़ी periods पर उस period का पूरा total
+  const totalVisits = period === 'live' ? liveVisitorCount : periodData.total_visits
+  const hasData = !!analyticsData?.has_data
 
-  const allCountries: Record<string, number> = {}
-  today.forEach((d: any) => { (d.top_countries || []).forEach((c: any) => { allCountries[c.name] = (allCountries[c.name] || 0) + c.count }) })
-  const topCountries = Object.entries(allCountries).sort((a, b) => b[1] - a[1]).slice(0, 20)
-
-  const allCities: Record<string, number> = {}
-  today.forEach((d: any) => { (d.top_cities || []).forEach((c: any) => { const k = `${c.country_name} / ${c.region || ''} / ${c.city}`; allCities[k] = (allCities[k] || 0) + c.count }) })
-  const topCities = Object.entries(allCities).sort((a, b) => b[1] - a[1]).slice(0, 20)
-
+  const topCountries = (periodData.top_countries || []).map((c: any) => [c.name, c.count])
+  const topCities = (periodData.top_cities || []).map((c: any) => [`${c.country_name} / ${c.region || ''} / ${c.city}`, c.count])
   const allBrowsers: Record<string, number> = {}
-  today.forEach((d: any) => { (d.top_browsers || []).forEach((b: any) => { allBrowsers[b.browser] = (allBrowsers[b.browser] || 0) + b.count }) })
-
+  ;(periodData.top_browsers || []).forEach((b: any) => { allBrowsers[b.browser] = (allBrowsers[b.browser] || 0) + b.count })
   const allOS: Record<string, number> = {}
-  today.forEach((d: any) => { (d.top_os || []).forEach((o: any) => { allOS[o.os] = (allOS[o.os] || 0) + o.count }) })
-
+  ;(periodData.top_os || []).forEach((o: any) => { allOS[o.os] = (allOS[o.os] || 0) + o.count })
   const allDevices: Record<string, number> = {}
-  today.forEach((d: any) => { (d.top_devices || []).forEach((d2: any) => { allDevices[d2.device_type] = (allDevices[d2.device_type] || 0) + d2.count }) })
+  ;(periodData.top_devices || []).forEach((d2: any) => { allDevices[d2.device_type] = (allDevices[d2.device_type] || 0) + d2.count })
+  const topPages = (periodData.top_pages || []).map((p: any) => [p.page, p.count])
+  const topReferrers = (periodData.top_referrers || []).map((r: any) => [r.referrer, r.count])
 
-  const allPages: Record<string, number> = {}
-  today.forEach((d: any) => { (d.top_pages || []).forEach((p: any) => { allPages[p.page] = (allPages[p.page] || 0) + p.count }) })
-  const topPages = Object.entries(allPages).sort((a, b) => b[1] - a[1]).slice(0, 20)
-
-  const allReferrers: Record<string, number> = {}
-  today.forEach((d: any) => { (d.top_referrers || []).forEach((r: any) => { allReferrers[r.referrer] = (allReferrers[r.referrer] || 0) + r.count }) })
-  const topReferrers = Object.entries(allReferrers).sort((a, b) => b[1] - a[1]).slice(0, 20)
-
-  // Intent pulse from referrers
+  // Intent pulse from search engines
   const intentMap: Record<string, number> = { informational: 0, navigational: 0, transactional: 0, commercial: 0 }
-  today.forEach((d: any) => {
-    (d.top_search_engines || []).forEach((se: any) => {
-      const k = se.search_engine || ''
-      if (['google', 'bing', 'yahoo', 'duckduckgo'].includes(k)) intentMap.informational += se.count
-      if (k === 'direct') intentMap.navigational += se.count
-    })
+  ;(periodData.top_search_engines || []).forEach((se: any) => {
+    const k = se.search_engine || ''
+    if (['google', 'bing', 'yahoo', 'duckduckgo'].includes(k)) intentMap.informational += se.count
+    if (k === 'direct') intentMap.navigational += se.count
   })
   const intentTotal = Object.values(intentMap).reduce((a, b) => a + b, 1)
 
@@ -156,7 +142,7 @@ function AnalyzeContent() {
               {website?.status === 'indexed' ? 'Indexed ✓' : 'Pending'}
             </span>
             {website?.indexly_id && <span style={{ fontSize: 12, color: 'var(--muted)', fontFamily: 'monospace' }}>ID: {website.indexly_id}</span>}
-            {live.length > 0 && <span style={{ fontSize: 12, color: '#22c55e' }}>🟢 {live.length} live visitor{live.length !== 1 ? 's' : ''}</span>}
+            {liveVisitorCount > 0 && <span style={{ fontSize: 12, color: '#22c55e' }}>🟢 {liveVisitorCount} live visitor{liveVisitorCount !== 1 ? 's' : ''}</span>}
           </div>
         </div>
 
@@ -173,6 +159,22 @@ function AnalyzeContent() {
           </div>
         )}
 
+        {/* Time range selector */}
+        <div className="graph-tabs" style={{ overflowX: 'auto', paddingBottom: 4, marginBottom: 4 }}>
+          {[
+            { key: 'live', label: 'Live' },
+            { key: 'today', label: 'Today' },
+            { key: 'week', label: 'This Week' },
+            { key: 'month', label: 'This Month' },
+            { key: 'year', label: 'This Year' },
+            { key: 'all', label: 'All Time' },
+          ].map(pr => (
+            <button key={pr.key} className={`graph-tab ${period === pr.key ? 'active' : ''}`} onClick={() => setPeriod(pr.key as any)} style={{ whiteSpace: 'nowrap' }}>
+              {pr.label}
+            </button>
+          ))}
+        </div>
+
         {/* Tabs */}
         <div className="graph-tabs" style={{ overflowX: 'auto', paddingBottom: 4 }}>
           {tabs.map(t => (
@@ -188,10 +190,10 @@ function AnalyzeContent() {
             {/* Stats row */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 10, marginBottom: 20 }}>
               {[
-                { label: 'Total Visits (Today)', value: totalVisits },
-                { label: 'Live Visitors', value: live.length },
-                { label: 'Top Country', value: topCountries[0]?.[0] || '—' },
-                { label: 'Top Page', value: topPages[0]?.[0] || '—' },
+                { label: `Total Visits (${period === 'live' ? 'Live' : period === 'today' ? 'Today' : period === 'week' ? 'This Week' : period === 'month' ? 'This Month' : period === 'year' ? 'This Year' : 'All Time'})`, value: totalVisits },
+                { label: 'Live Visitors', value: liveVisitorCount },
+                { label: 'Top Country', value: topCountries[0]?.[0] || (hasData ? '—' : 'No data yet') },
+                { label: 'Top Page', value: topPages[0]?.[0] || (hasData ? '—' : 'No data yet') },
               ].map(s => (
                 <div key={s.label} className="card" style={{ padding: 16, textAlign: 'center' }}>
                   <div style={{ fontSize: 22, fontWeight: 800, color: 'var(--accent)', wordBreak: 'break-all' }}>{s.value}</div>
@@ -199,17 +201,6 @@ function AnalyzeContent() {
                 </div>
               ))}
             </div>
-
-            {/* Weekly traffic */}
-            {weekly.length > 0 && (
-              <div className="card" style={{ marginBottom: 16 }}>
-                <div style={{ fontWeight: 600, marginBottom: 14 }}>Weekly Traffic</div>
-                {weekly.slice(0, 8).map((w: any) => renderBar(
-                  `Week ${w.week_number}`, w.total_visits,
-                  maxVal(weekly.map((x: any) => x.total_visits))
-                ))}
-              </div>
-            )}
 
             {/* Indexing status */}
             <div className="card">
