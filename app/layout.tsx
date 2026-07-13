@@ -3,7 +3,7 @@ import './globals.css'
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://indexly-snowy.vercel.app'
 const title = 'Indexly — Index Everywhere. Instantly.'
-const description = 'Index your website on 14 search engines in 2 simple steps. Bing, Yandex, Naver, DuckDuckGo, Yahoo and more. Free & Open Source.'
+const description = 'Index your website on 22 search engines in 2 simple steps. Bing, Yandex, Naver, DuckDuckGo, Yahoo and more. Free & Open Source.'
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -63,7 +63,7 @@ const schemaWebApp = {
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD', availability: 'https://schema.org/InStock' },
   creator: { '@type': 'Organization', name: 'Indexly', url: baseUrl },
   featureList: [
-    'Submit website to 14 search engines',
+    'Submit website to 22 search engines',
     'Domain and URL indexing',
     'Real-time visitor analytics',
     'Search Intent Pulse analytics',

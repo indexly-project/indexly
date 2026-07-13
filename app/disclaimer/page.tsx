@@ -4,7 +4,7 @@ import Link from 'next/link'
 export const metadata: Metadata = { title: 'Disclaimer — Indexly' }
 const sections = [
   { title: 'No Guarantee of Indexing', content: 'Indexly submits your website to search engines using official protocols. However, the decision to index rests entirely with each search engine. Indexly does not guarantee your website will appear in search results.' },
-  { title: 'Search Engine Independence', content: 'Google, Bing, Yandex, Naver and other search engines are independent services. Indexly has no control over their algorithms, indexing policies, or ranking systems.' },
+  { title: 'Search Engine Independence', content: 'Google, Bing, Yandex, Naver, and the other 18 search engines listed on our homepage are independent services. Indexly has no control over their algorithms, indexing policies, or ranking systems.' },
   { title: 'Third-Party Services', content: 'Indexly relies on third-party APIs. Availability of these services is outside our control. Service interruptions at these providers may affect Indexly.' },
   { title: 'Analytics Accuracy', content: 'Analytics data is sourced from our own tracking system and is provided for informational purposes. The Search Intent Pulse uses an algorithmic classification that may not perfectly reflect actual user intent.' },
   { title: 'Open Source Disclaimer', content: 'Indexly is provided under the MIT license "as is". Contributors make no warranties about its suitability for any purpose.' },

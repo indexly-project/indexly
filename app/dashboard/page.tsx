@@ -180,7 +180,7 @@ export default function Dashboard() {
           <div>
             <h2 style={{ marginBottom: 6 }}>Index Your Website</h2>
             <p style={{ color: 'var(--muted)', fontSize: 14, marginBottom: 24 }}>
-              Your website will appear on all 14 search engines — Google, Bing, Yandex, Naver and more.
+              Your website will appear on all 22 search engines — Google, Bing, Yandex, Naver and more.
             </p>
 
             {error && <div className="error-msg" style={{ marginBottom: 16 }}>{error}</div>}
@@ -257,7 +257,7 @@ export default function Dashboard() {
           <div style={{ textAlign: 'center', paddingTop: 40 }}>
             <div className="timer-circle">{timer}</div>
             <h2 style={{ marginBottom: 10 }}>Generating your verification codes...</h2>
-            <p style={{ color: 'var(--muted)', fontSize: 14 }}>Preparing unique codes for all 14 search engines. Please wait.</p>
+            <p style={{ color: 'var(--muted)', fontSize: 14 }}>Preparing unique codes for all 22 search engines. Please wait.</p>
           </div>
         )}
 
@@ -320,7 +320,7 @@ export default function Dashboard() {
             <h2 style={{ marginBottom: 10 }}>Hang tight, we're on it! 🚀</h2>
             <p style={{ color: 'var(--muted)', fontSize: 14, lineHeight: 1.7 }}>
               Scanning your website for verification codes...<br />
-              Submitting to all 14 search engines...
+              Submitting to all 22 search engines...
             </p>
           </div>
         )}

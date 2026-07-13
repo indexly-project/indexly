@@ -41,7 +41,7 @@ export default function LoginPage() {
         <div className="auth-logo">
           <img src="/logo.png" alt="Indexly" onError={e => (e.target as HTMLImageElement).style.display = 'none'} />
           <h1>Indexly</h1>
-          <p>Index your website on 14 search engines — instantly.</p>
+          <p>Index your website on 22 search engines — instantly.</p>
         </div>
 
         <div style={{ display: 'flex', background: 'var(--surface)', borderRadius: 8, padding: 4, marginBottom: 20, border: '1px solid var(--border)' }}>

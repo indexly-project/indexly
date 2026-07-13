@@ -6,7 +6,7 @@
 
 ### Index Everywhere. Instantly.
 
-Submit your website to 200+ search engines in just 2 simple steps.
+Submit your website to 22 search engines in just 2 simple steps.
 Free forever. Open source. No accounts needed for each search engine.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
@@ -21,16 +21,16 @@ Free forever. Open source. No accounts needed for each search engine.
 
 ## What is Indexly?
 
-Getting a website discovered by search engines usually means visiting Google Search Console, Bing Webmaster Tools, Yandex Webmaster, and a dozen other platforms — each with its own verification process and dashboard.
+Getting a website discovered by search engines usually means visiting Google Search Console, Bing Webmaster Tools, Yandex Webmaster, and several other platforms — each with its own verification process and dashboard.
 
-**Indexly fixes that.** Submit your URL once, complete 2 simple steps, and get indexed across Google and 200+ other search engines (Bing, Yahoo, Yandex, DuckDuckGo, Naver, Seznam, Yep, and more) — all through a single, unified flow.
+**Indexly fixes that.** Submit your URL once, complete 2 simple steps, and your website becomes discoverable across 22 major global and regional search engines — Google, Bing, Yandex, Naver, Seznam.cz, Yep, Yahoo!, AOL, DuckDuckGo, Ecosia, Swisscows, Lycos, Dogpile, WebCrawler, Excite, Ekoru, GiveWater, Lilo, Startpage, Ask.com, Info.com, and Gibiru — all through a single, unified flow.
 
 ## Features
 
 - 🔗 **Domain or URL indexing** — index your whole site or a single page
 - ⚡ **2-step verification** — one meta tag, one key file, that's it
-- 🌍 **200+ search engines** — covered via Google API + IndexNow protocol
-- 📊 **5 analytics graphs** — search engine visibility, country/state traffic, traffic timeline
+- 🌍 **22 search engines** — covered via the Google Site Verification API and the IndexNow protocol
+- 📊 **Live + historical analytics** — Live, Today, This Week, This Month, This Year, and All Time views, with country/city, device, browser, referrer and page-level breakdowns
 - 🧭 **Search Intent Pulse** — our unique algorithm classifying visitor intent (informational, navigational, transactional, commercial) over time
 - 🆓 **100% free & open source** — MIT licensed, no hidden costs
 - 📱 **Mobile-first** — fully responsive, built for everyone
@@ -39,10 +39,14 @@ Getting a website discovered by search engines usually means visiting Google Sea
 
 1. **Sign up** and enter your website URL or domain
 2. **Add 2 things** to your site — a meta tag and a small key file
-3. **Click Verify** — Indexly checks your site and submits it across the search engine network
-4. **View Analytics** after 24 hours — see exactly how your site is performing
+3. **Click Verify** — Indexly confirms both are correctly in place, verifies your ownership with Google, and submits your site across the search engine network
+4. **View Analytics** — live visitor data appears immediately; broader trends build up over the following days as more visits come in
 
 Read the full guide in our [Documentation](https://indexly-snowy.vercel.app/docs).
+
+## How Indexing Actually Works
+
+Indexly directly verifies your site with Google (via the Site Verification API) and pings the IndexNow protocol, which is natively supported by Bing, Yandex, Naver, Seznam.cz, and Yep. Once your site is indexed on these engines, many of the remaining engines on our list either draw from these same indexes, run their own independent crawlers, or query other engines live at search time — so your visibility naturally extends further than the engines we submit to directly. Typical time-to-visibility ranges from minutes (Bing, Yandex) to a few days (smaller regional and niche engines); see the homepage for a per-engine breakdown.
 
 ## Tech Stack
 
