@@ -4,7 +4,7 @@
   if (!script) return;
   var siteId = script.getAttribute('data-site-id');
   if (!siteId) return;
-  var endpoint = 'https://ucwaojbakhfziyfkuswx.supabase.co/functions/v1/track-visit';
+  var endpoint = 'https://indexly-snowy.vercel.app/api/track';
   var sessionKey = 'ixly_' + siteId;
   var session = sessionStorage.getItem(sessionKey);
   if (!session) { session = Math.random().toString(36).slice(2); sessionStorage.setItem(sessionKey, session); }
